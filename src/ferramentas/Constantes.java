@@ -36,7 +36,7 @@ public class Constantes {
 
 	public static final Integer CENTRO_TELA_Y = (HEIGHT_SCREEN / 2) + 5;
 
-	public static final Integer SCALE = 6;
+	public static final Integer SCALE = 3;
 
 	public static final Integer DIMENSAO_LARGURA = WIDTH_SCREEN * SCALE;
 

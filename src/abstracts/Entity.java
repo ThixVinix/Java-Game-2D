@@ -3,10 +3,12 @@ package abstracts;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.util.Iterator;
 
 import aplicacao.Game;
 import enums.StatusPersonagemEnum;
 import ferramentas.Constantes;
+import ferramentas.ConverterNumbers;
 import interfaces.LoopingEntity;
 import mb.EntityMB;
 import world.Camera;
@@ -43,6 +45,8 @@ public abstract class Entity implements LoopingEntity {
 
 	public static EntityMB entityMB = new EntityMB();
 
+	private Long id;
+	
 	private String nome;
 	private String guilda;
 	private String estoria;
@@ -66,6 +70,10 @@ public abstract class Entity implements LoopingEntity {
 
 	// "x" and "y" type Integer.
 	public Entity(Integer x, Integer y, Integer width, Integer height, BufferedImage sprite) {
+		
+		id = gerarId();
+		System.out.println("ID GERADO: " + id);
+		
 		this.x = x;
 		this.y = y;
 		this.width = width;
@@ -137,6 +145,19 @@ public abstract class Entity implements LoopingEntity {
 		this.maskHeight = maskHeight;
 	}
 
+	private Long gerarId() {
+		Long cod = ConverterNumbers.trasformarEmPositivo(Game.random.nextLong());
+		for (int i = 0; i < Game.entities.size(); i++) {
+			Entity entityActual = Game.entities.get(i); 
+			
+			if (entityActual.getId().equals(cod)) {
+				return gerarId();
+			}
+		}
+		
+		return cod;
+	}
+	
 	public Integer getIntegerX() {
 		return (int) x;
 	}
@@ -400,5 +421,11 @@ public abstract class Entity implements LoopingEntity {
 	public void setAttacking(boolean attacking) {
 		this.attacking = attacking;
 	}
+
+	public Long getId() {
+		return id;
+	}
+	
+	
 
 }
