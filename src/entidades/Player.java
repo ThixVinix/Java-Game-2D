@@ -12,10 +12,11 @@ import enums.StatusPersonagemEnum;
 import ferramentas.Constantes;
 import interfaces.CombatePlayer;
 import interfaces.CondicoesEntity;
+import interfaces.EntityActions;
 import world.Camera;
 import world.Mapa;
 
-public class Player extends Entity implements CondicoesEntity, CombatePlayer {
+public class Player extends Entity implements CondicoesEntity, EntityActions {
 
 	public int rightDir = 0, leftDir = 1, upDir = 2, downDir = 3;
 	public int dir = 3;
@@ -754,26 +755,32 @@ public class Player extends Entity implements CondicoesEntity, CombatePlayer {
 	}
 
 	@Override
-	public void atacarInimigo(Enemy enemy) {
-
-		Integer danoDissipado = this.getAtaque() - enemy.getDefesa();
-
-		if (danoDissipado > 0) {
-			enemy.setVida(enemy.getVida() - danoDissipado);
-			System.out.println("O jogador " + this.getNome() + " atacou o inimigo " + enemy.getNome() + "!\n"
-					+ "Entretanto" + " o inimigo conseguiu bloquear parte do dano. \n" + enemy.getNome() + " ficou com "
-					+ enemy.getVida() + " pontos de vida!");
-		} else {
-			System.out.println("O ataque do jogador " + this.getNome() + " não causou efeito na vida do inimigo "
-					+ enemy.getNome());
-		}
-
+	public void atacar() {
+		// TODO Auto-generated method stub
+		
 	}
 
-	@Override
-	public void desviarInimigo() {
-		System.out.println("O jogador " + getNome() + " desviou!");
-
-	}
+//	@Override
+//	public void atacarInimigo(Enemy enemy) {
+//
+//		Integer danoDissipado = this.getAtaque() - enemy.getDefesa();
+//
+//		if (danoDissipado > 0) {
+//			enemy.setVida(enemy.getVida() - fdanoDissipado);
+//			System.out.println("O jogador " + this.getNome() + " atacou o inimigo " + enemy.getNome() + "!\n"
+//					+ "Entretanto" + " o inimigo conseguiu bloquear parte do dano. \n" + enemy.getNome() + " ficou com "
+//					+ enemy.getVida() + " pontos de vida!");
+//		} else {
+//			System.out.println("O ataque do jogador " + this.getNome() + " não causou efeito na vida do inimigo "
+//					+ enemy.getNome());
+//		}
+//
+//	}
+//
+//	@Override
+//	public void desviarInimigo() {
+//		System.out.println("O jogador " + getNome() + " desviou!");
+//
+//	}
 
 }
