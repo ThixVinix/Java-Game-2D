@@ -9,11 +9,13 @@ import aplicacao.Game;
 import enums.StatusPersonagemEnum;
 import ferramentas.Constantes;
 import ferramentas.ConverterNumbers;
+import interfaces.EntityActions;
 import interfaces.LoopingEntity;
 import mb.EntityMB;
+import mediadores.EntityMediator;
 import world.Camera;
 
-public abstract class Entity implements LoopingEntity {
+public abstract class Entity implements LoopingEntity, EntityActions {
 
 	public static final BufferedImage LIFEPACK_ENTITY = Game.itens.getSpritesheet(Constantes.POSICAO_IMAGEM_LIFEPACK_X,
 			Constantes.POSICAO_IMAGEM_LIFEPACK_Y, Constantes.LARGURA_LIFEPACK, Constantes.ALTURA_LIFEPACK);
@@ -44,8 +46,11 @@ public abstract class Entity implements LoopingEntity {
 			Constantes.POSICAO_IMAGEM_ENEMY_1_Y, Constantes.LARGURA_ENEMY_1, Constantes.ALTURA_ENEMY_1);
 
 	public static EntityMB entityMB = new EntityMB();
+	
+	public static EntityMediator mediador = new EntityMediator();
 
 	private Long id;
+	private Boolean mediatorReceived;
 	
 	private String nome;
 	private String guilda;
@@ -424,6 +429,10 @@ public abstract class Entity implements LoopingEntity {
 
 	public Long getId() {
 		return id;
+	}
+
+	public Boolean getMediatorReceived() {
+		return mediatorReceived;
 	}
 	
 	

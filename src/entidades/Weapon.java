@@ -33,4 +33,10 @@ public class Weapon extends Entity {
 				this.getIntegerY() + this.getMaskY() - Camera.getY(), this.getMaskWidth(), this.getMaskHeight());
 	}
 
+	@Override
+	public void atacar() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

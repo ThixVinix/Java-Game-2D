@@ -6,10 +6,11 @@ import java.awt.image.BufferedImage;
 
 import abstracts.Entity;
 import aplicacao.Game;
+import enums.EntityActionEnum;
 import ferramentas.Constantes;
 import world.Camera;
 
-public class BulletsShoot extends Entity {
+public class BulletsShoot extends Entity  {
 
 	private Integer dx;
 	private Integer dy;
@@ -41,7 +42,11 @@ public class BulletsShoot extends Entity {
 	@Override
 	public void update() {
 
-		entityMB.checkCollisionWithAnotherEntity(this);
+//		entityMB.checkCollisionWithAnotherEntity(this);
+		if (mediador.notify(EntityActionEnum.ATACAR, this)) 
+			atacar();
+		
+		
 		setDistanciaDoubleAtual(getDistanciaDoubleAtual() + 1.0);
 		if (getDistanciaDoubleAtual() < getDistanciaDoubleMax() && !entityMB.isCollidingWithWallTiles(this)) {
 			setDoubleX(getDoubleX() + getDx() * getIntegerSpeed());
@@ -59,6 +64,12 @@ public class BulletsShoot extends Entity {
 		graficos.setColor(Color.BLACK);
 		graficos.fillRect(this.getIntegerX() + this.getMaskX() - Camera.getX(),
 				this.getIntegerY() + this.getMaskY() - Camera.getY(), this.getMaskWidth(), this.getMaskHeight());
+	}
+	
+	@Override
+	public void atacar() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	public Integer getDx() {
@@ -104,6 +115,8 @@ public class BulletsShoot extends Entity {
 	public void setDistanciaDoubleMax(double distanciaMax) {
 		this.distanciaMax = distanciaMax;
 	}
+
+	
 
 	
 

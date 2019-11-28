@@ -596,4 +596,10 @@ public class Enemy extends Entity implements CondicoesEntity, CombateEnemy {
 
 	}
 
+	@Override
+	public void atacar() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

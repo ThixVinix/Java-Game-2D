@@ -1,9 +1,10 @@
 package interfaces;
 
+import abstracts.Entity;
 import enums.EntityActionEnum;
 
 public interface Mediator {
 
-	EntityActionEnum notificar(EntityActionEnum action);
+	public boolean notify(EntityActionEnum action, Entity entitySolicitante);
 	
 }

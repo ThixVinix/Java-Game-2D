@@ -3,7 +3,7 @@ package enums;
 public enum EntityActionEnum {
 
 	// ATAQUE
-	ATACAR,
+	SOLICITAR_ATAQUE, ATACAR,
 
 	// DEFESA
 	DEFENDER,

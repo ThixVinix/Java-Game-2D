@@ -29,4 +29,10 @@ public class Lifepack extends Entity {
 		graficos.fillRect(this.getIntegerX() + this.getMaskX() - Camera.getX(),
 				this.getIntegerY() + this.getMaskY() - Camera.getY(), this.getMaskWidth(), this.getMaskHeight());
 	}
+
+	@Override
+	public void atacar() {
+		// TODO Auto-generated method stub
+		
+	}
 }
