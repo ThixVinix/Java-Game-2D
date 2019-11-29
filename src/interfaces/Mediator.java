@@ -5,6 +5,6 @@ import enums.EntityActionEnum;
 
 public interface Mediator {
 
-	public boolean notify(EntityActionEnum action, Entity entitySolicitante);
+	public boolean notify(Entity entitySolicitante, EntityActionEnum action);
 	
 }

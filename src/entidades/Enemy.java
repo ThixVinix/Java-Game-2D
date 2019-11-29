@@ -5,9 +5,13 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
+import javax.swing.JOptionPane;
+
 import abstracts.Entity;
 import aplicacao.Game;
+import enums.EntityActionEnum;
 import enums.StatusPersonagemEnum;
+import exceptions.ValorNegativoException;
 import ferramentas.Constantes;
 import interfaces.CombateEnemy;
 import interfaces.CondicoesEntity;
@@ -71,8 +75,8 @@ public class Enemy extends Entity implements CondicoesEntity, CombateEnemy {
 
 	@Override
 	public void morrer() {
-		setStatus(StatusPersonagemEnum.MORTO);
-
+		Game.enemies.remove(this);
+		Game.entities.remove(this);
 	}
 
 	@Override
@@ -215,6 +219,11 @@ public class Enemy extends Entity implements CondicoesEntity, CombateEnemy {
 //
 //		case 1:
 
+		if (verificarStatus().equals(StatusPersonagemEnum.VIVO)
+				|| verificarStatus().equals(StatusPersonagemEnum.FERIDO)) {
+
+		}
+
 		if (retardarMovimentacaoInimiga()) {
 			movimentarInimigoEmAmbasDirecoes();
 			checkIsAttacked();
@@ -239,9 +248,9 @@ public class Enemy extends Entity implements CondicoesEntity, CombateEnemy {
 			attackedFrames++;
 			if (attackedFrames == 5) {
 				this.attackedFrames = 0;
-				setAttacked(false);
 			}
 		}
+		setAttacked(false);
 	}
 
 	private void desenharMovimentacaoEnemy1(Graphics graficos) {
@@ -288,16 +297,16 @@ public class Enemy extends Entity implements CondicoesEntity, CombateEnemy {
 	}
 
 	private void desenharInimigoParadoRecebendoDano(Graphics graficos) {
-		if ( dir == rightDir) {
+		if (dir == rightDir) {
 			graficos.drawImage(rightEnemy1Attacked[0], this.getIntegerX() - Camera.getX(),
 					this.getIntegerY() - Camera.getY(), null);
-		} else if ( dir == leftDir) {
+		} else if (dir == leftDir) {
 			graficos.drawImage(leftEnemy1Attacked[0], this.getIntegerX() - Camera.getX(),
 					this.getIntegerY() - Camera.getY(), null);
-		} else if ( dir == upDir) {
+		} else if (dir == upDir) {
 			graficos.drawImage(upEnemy1Attacked[0], this.getIntegerX() - Camera.getX(),
 					this.getIntegerY() - Camera.getY(), null);
-		} else if ( dir == downDir) {
+		} else if (dir == downDir) {
 			graficos.drawImage(downEnemy1Attacked[0], this.getIntegerX() - Camera.getX(),
 					this.getIntegerY() - Camera.getY(), null);
 		}
@@ -388,7 +397,7 @@ public class Enemy extends Entity implements CondicoesEntity, CombateEnemy {
 
 	private void movimentarInimigoEmAmbasDirecoes() {
 
-		if (!entityMB.isCollidingWithAnotherEntity(this, Game.player)) {
+		if (!mediador.notify(this, EntityActionEnum.CHECAR_COLISAO)) {
 
 			// EIXO 'X'
 			if ((getIntegerX() + getMaskX()) < (Game.player.getIntegerX() + Game.player.getMaskX())
@@ -445,7 +454,11 @@ public class Enemy extends Entity implements CondicoesEntity, CombateEnemy {
 				}
 			}
 
-			entityMB.atacar(this, Game.player);
+//			entityMB.combater(this, Game.player);
+
+			if (mediador.notify(this, EntityActionEnum.ATACAR)) {
+				atacar(this, Game.player);
+			}
 		}
 	}
 
@@ -508,8 +521,14 @@ public class Enemy extends Entity implements CondicoesEntity, CombateEnemy {
 				}
 			}
 
-			entityMB.atacar(this, Game.player);
+			entityMB.combater(this, Game.player);
 		}
+
+	}
+
+	@Override
+	public void realizarAcoes() {
+		// TODO Auto-generated method stub
 
 	}
 
@@ -597,9 +616,33 @@ public class Enemy extends Entity implements CondicoesEntity, CombateEnemy {
 	}
 
 	@Override
-	public void atacar() {
-		// TODO Auto-generated method stub
-		
+	public void atacar(Entity atacante, Entity vitima) {
+		entityMB.combater(atacante, vitima);
+
+	}
+
+	@Override
+	public void perderVida(Integer danoRecebido) {
+		try {
+
+			if (danoRecebido < 0.0) {
+				throw new ValorNegativoException(danoRecebido);
+			}
+
+			setVida(getVida() - danoRecebido);
+
+		} catch (ValorNegativoException e) {
+			JOptionPane.showMessageDialog(null, "O valor da vida passado pelo parâmetro não deve ser negativo",
+					"ValorNegativoException", JOptionPane.WARNING_MESSAGE, null);
+			e.printStackTrace();
+			System.exit(0);
+		}
+
+	}
+
+	@Override
+	public StatusPersonagemEnum verificarStatus() {
+		return super.verificarStatus();
 	}
 
 }

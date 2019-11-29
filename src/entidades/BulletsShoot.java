@@ -10,13 +10,12 @@ import enums.EntityActionEnum;
 import ferramentas.Constantes;
 import world.Camera;
 
-public class BulletsShoot extends Entity  {
+public class BulletsShoot extends Entity {
 
 	private Integer dx;
 	private Integer dy;
 	private double distanciaAtual;
 	private double distanciaMax;
-
 
 	// ATENCAO: ESTE CONSTRUTOR CONTEM 2 PARAMETROS A MAIS (DX E DY).
 	public BulletsShoot(Integer x, Integer y, Integer width, Integer height, BufferedImage sprite, int dx, int dy) {
@@ -43,10 +42,11 @@ public class BulletsShoot extends Entity  {
 	public void update() {
 
 //		entityMB.checkCollisionWithAnotherEntity(this);
-		if (mediador.notify(EntityActionEnum.ATACAR, this)) 
-			atacar();
-		
-		
+		if (mediador.notify(this, EntityActionEnum.ATACAR)) {
+			atacar(this, getOtherEntity());
+			setOtherEntity(null);
+		}
+
 		setDistanciaDoubleAtual(getDistanciaDoubleAtual() + 1.0);
 		if (getDistanciaDoubleAtual() < getDistanciaDoubleMax() && !entityMB.isCollidingWithWallTiles(this)) {
 			setDoubleX(getDoubleX() + getDx() * getIntegerSpeed());
@@ -57,19 +57,29 @@ public class BulletsShoot extends Entity  {
 		}
 	}
 
-
-
 	@SuppressWarnings(value = { "unused" })
 	private void mostrarMascaraBulletsShoot(Graphics graficos) {
 		graficos.setColor(Color.BLACK);
 		graficos.fillRect(this.getIntegerX() + this.getMaskX() - Camera.getX(),
 				this.getIntegerY() + this.getMaskY() - Camera.getY(), this.getMaskWidth(), this.getMaskHeight());
 	}
-	
+
 	@Override
-	public void atacar() {
+	public void atacar(Entity atacante, Entity vitima) {
+		entityMB.combater(atacante, vitima);
+
+	}
+
+	@Override
+	public void perderVida(Integer danoRecebido) {
 		// TODO Auto-generated method stub
-		
+
+	}
+
+	@Override
+	public void realizarAcoes() {
+		// TODO Auto-generated method stub
+
 	}
 
 	public Integer getDx() {
@@ -115,9 +125,5 @@ public class BulletsShoot extends Entity  {
 	public void setDistanciaDoubleMax(double distanciaMax) {
 		this.distanciaMax = distanciaMax;
 	}
-
-	
-
-	
 
 }

@@ -22,7 +22,7 @@ public class Bullets extends Entity {
 		super.render(graficos);
 //		mostrarMascaraBullets(graficos);
 	}
-	
+
 	@SuppressWarnings(value = { "unused" })
 	private void mostrarMascaraBullets(Graphics graficos) {
 		graficos.setColor(Color.YELLOW);
@@ -31,8 +31,21 @@ public class Bullets extends Entity {
 	}
 
 	@Override
-	public void atacar() {
+	public void realizarAcoes() {
 		// TODO Auto-generated method stub
-		
+
 	}
+
+	@Override
+	public void atacar(Entity atacante, Entity vitima) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void perderVida(Integer danoRecebido) {
+		// TODO Auto-generated method stub
+
+	}
+
 }

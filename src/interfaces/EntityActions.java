@@ -1,15 +1,19 @@
 package interfaces;
 
+import abstracts.Entity;
+
 public interface EntityActions {
 
 	
-	public void atacar();
+	public void realizarAcoes();
+	
+	public void atacar(Entity atacante, Entity vitima);
 	
 //	public void defender();
 //	
 //	public void ganharVida();
 //	
-//	public void perderVida();
+	public void perderVida(Integer danoRecebido);
 //	
 //	public void alterarVidaMaxima();
 //	

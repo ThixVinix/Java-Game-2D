@@ -50,7 +50,7 @@ public abstract class Entity implements LoopingEntity, EntityActions {
 	public static EntityMediator mediador = new EntityMediator();
 
 	private Long id;
-	private Boolean mediatorReceived;
+	private Entity otherEntity;
 	
 	private String nome;
 	private String guilda;
@@ -161,6 +161,21 @@ public abstract class Entity implements LoopingEntity, EntityActions {
 		}
 		
 		return cod;
+	}
+	
+	public  StatusPersonagemEnum verificarStatus() {
+
+		if (this.getVida() > 40) {
+			this.setStatus(StatusPersonagemEnum.VIVO);
+			return StatusPersonagemEnum.VIVO;
+		} else if (this.getVida() > 0 && this.getVida() <= 40) {
+			this.setStatus(StatusPersonagemEnum.FERIDO);
+			return StatusPersonagemEnum.FERIDO;
+		} else {
+			this.setStatus(StatusPersonagemEnum.MORTO);
+			return StatusPersonagemEnum.MORTO;
+		}
+
 	}
 	
 	public Integer getIntegerX() {
@@ -431,8 +446,12 @@ public abstract class Entity implements LoopingEntity, EntityActions {
 		return id;
 	}
 
-	public Boolean getMediatorReceived() {
-		return mediatorReceived;
+	public Entity getOtherEntity() {
+		return otherEntity;
+	}
+
+	public void setOtherEntity(Entity otherEntity) {
+		this.otherEntity = otherEntity;
 	}
 	
 	

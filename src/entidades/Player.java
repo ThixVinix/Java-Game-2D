@@ -10,7 +10,6 @@ import aplicacao.Game;
 import enums.StatusGameEnum;
 import enums.StatusPersonagemEnum;
 import ferramentas.Constantes;
-import interfaces.CombatePlayer;
 import interfaces.CondicoesEntity;
 import interfaces.EntityActions;
 import world.Camera;
@@ -755,10 +754,24 @@ public class Player extends Entity implements CondicoesEntity, EntityActions {
 	}
 
 	@Override
-	public void atacar() {
+	public void realizarAcoes() {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void atacar(Entity atacante, Entity vitima) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void perderVida(Integer danoRecebido) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
 
 //	@Override
 //	public void atacarInimigo(Enemy enemy) {

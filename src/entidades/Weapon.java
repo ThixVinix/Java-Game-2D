@@ -34,9 +34,22 @@ public class Weapon extends Entity {
 	}
 
 	@Override
-	public void atacar() {
+	public void realizarAcoes() {
 		// TODO Auto-generated method stub
 		
 	}
 
+	@Override
+	public void atacar(Entity atacante, Entity vitima) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void perderVida(Integer danoRecebido) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
 }

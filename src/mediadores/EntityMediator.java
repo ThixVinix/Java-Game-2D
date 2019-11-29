@@ -16,14 +16,11 @@ import interfaces.Mediator;
 public class EntityMediator implements Mediator {
 
 	@Override
-	public boolean notify(EntityActionEnum action, Entity entitySolicitante) {
+	public boolean notify(Entity entitySolicitante, EntityActionEnum action) {
 		switch (action) {
-		case SOLICITAR_ATAQUE:
-			checkCollisionWithAnotherEntity(entitySolicitante);
-			
-			break;
 		case ATACAR:
-			entitySolicitante.atacar();
+			checkCollisionWithAnotherEntity(entitySolicitante);
+		
 			break;
 		case DEFENDER:
 
@@ -75,6 +72,12 @@ public class EntityMediator implements Mediator {
 		case PERDER_VELOCIDADE_MOVIMENTO:
 
 			break;
+			
+		case CHECAR_COLISAO:
+			if (entitySolicitante instanceof Enemy) 
+				return isCollidingWithAnotherEntity(entitySolicitante, Game.player);
+							
+			break;
 		default:
 			break;
 		}
@@ -87,6 +90,7 @@ public class EntityMediator implements Mediator {
 			Entity atual = Game.entities.get(i);
 			if (isCollidingWithAnotherEntity(atual, entity)) {
 				if (entity instanceof BulletsShoot && atual instanceof Enemy) {
+					entity.setOtherEntity(atual);
 					return true;
 //					prepararInteracaoBulletsShootComEnemy((BulletsShoot) entity, (Enemy) atual);
 				}
@@ -104,22 +108,22 @@ public class EntityMediator implements Mediator {
 		return e1Mask.intersects(e2Mask);
 	}
 	
-	public static void atacar(Entity atacante, Entity defensor) {
+	public static void atacar(Entity atacante, Entity vitima) {
 
-		if (defensor.getVida() > 0) {
-			if (!desviar(atacante, defensor)) {
-				if (atacante.getAtaque() > defensor.getDefesa()) {
+		if (vitima.getVida() > 0) {
+			if (!desviar(atacante, vitima)) {
+				if (atacante.getAtaque() > vitima.getDefesa()) {
 					atacante.setAttacking(true);
-					defensor.setAttacked(true);
-					int danoDissipado = dissiparDano(atacante, defensor);
-					diminuirVida(defensor, danoDissipado);
-					verificarStatusPersonagemEnum(defensor);
+					vitima.setAttacked(true);
+					int danoDissipado = dissiparDano(atacante, vitima);
+					diminuirVida(vitima, danoDissipado);
+					verificarStatusPersonagemEnum(vitima);
 				} else {
-					System.out.println(defensor.getNome() + " bloqueou o ataque!");
+					System.out.println(vitima.getNome() + " bloqueou o ataque!");
 				}
 
 			} else {
-				System.out.println(defensor.getNome() + " desviou do ataque!");
+				System.out.println(vitima.getNome() + " desviou do ataque!");
 			}
 		}
 

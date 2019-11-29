@@ -288,22 +288,23 @@ public class EntityMB {
 		}
 	}
 
-	public void atacar(Entity atacante, Entity defensor) {
+	public void combater(Entity atacante, Entity vitima) {
 
-		if (defensor.getVida() > 0) {
-			if (!desviar(atacante, defensor)) {
-				if (atacante.getAtaque() > defensor.getDefesa()) {
+		if (vitima.getVida() > 0) {
+			if (!desviar(atacante, vitima)) {
+				if (atacante.getAtaque() > vitima.getDefesa()) {
 					atacante.setAttacking(true);
-					defensor.setAttacked(true);
-					int danoDissipado = dissiparDano(atacante, defensor);
-					diminuirVida(defensor, danoDissipado);
-					verificarStatusPersonagemEnum(defensor);
+					vitima.setAttacked(true);
+					int danoDissipado = dissiparDano(atacante, vitima);
+					diminuirVida(vitima, danoDissipado);
+					vitima.perderVida(danoDissipado);
+					verificarStatusPersonagemEnum(vitima);
 				} else {
-					System.out.println(defensor.getNome() + " bloqueou o ataque!");
+					System.out.println(vitima.getNome() + " bloqueou o ataque!");
 				}
 
 			} else {
-				System.out.println(defensor.getNome() + " desviou do ataque!");
+				System.out.println(vitima.getNome() + " desviou do ataque!");
 			}
 		}
 
@@ -395,7 +396,7 @@ public class EntityMB {
 	private void prepararInteracaoBulletsShootComEnemy(BulletsShoot bulletShoot, Enemy enemy) {
 
 		double vidaInimigoAntes = enemy.getVida();
-		atacar(bulletShoot, enemy);
+		combater(bulletShoot, enemy);
 		double vidaInimigoDepois = enemy.getVida();
 
 		if (vidaInimigoAntes > vidaInimigoDepois) {
