@@ -54,6 +54,7 @@ public class BulletsShoot extends Entity {
 
 		} else {
 			Game.bulletsShoot.remove(this);
+			Game.entities.remove(this);
 		}
 	}
 
@@ -71,7 +72,7 @@ public class BulletsShoot extends Entity {
 	}
 
 	@Override
-	public void perderVida(Integer danoRecebido) {
+	public void diminuirVida(Integer danoRecebido) {
 		// TODO Auto-generated method stub
 
 	}
@@ -80,6 +81,24 @@ public class BulletsShoot extends Entity {
 	public void realizarAcoes() {
 		// TODO Auto-generated method stub
 
+	}
+	
+	@Override
+	public boolean desviar(Integer chanceAcertoAtacante, Integer chanceEsquivaVitima) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public int dissiparDano(Integer ataqueAtacante, Integer defesaVitima) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void bloquearDano() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	public Integer getDx() {
@@ -125,5 +144,7 @@ public class BulletsShoot extends Entity {
 	public void setDistanciaDoubleMax(double distanciaMax) {
 		this.distanciaMax = distanciaMax;
 	}
+
+	
 
 }

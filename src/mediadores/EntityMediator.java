@@ -8,6 +8,7 @@ import abstracts.Entity;
 import aplicacao.Game;
 import entidades.BulletsShoot;
 import entidades.Enemy;
+import entidades.Player;
 import enums.EntityActionEnum;
 import enums.StatusPersonagemEnum;
 import exceptions.ValorNegativoException;
@@ -20,58 +21,6 @@ public class EntityMediator implements Mediator {
 		switch (action) {
 		case ATACAR:
 			checkCollisionWithAnotherEntity(entitySolicitante);
-		
-			break;
-		case DEFENDER:
-
-			break;
-
-		case DESVIAR:
-
-			break;
-
-		case RECEBER_DANO:
-
-			break;
-
-		case ALTERAR_VIDA_MAX:
-
-			break;
-		case GANHAR_CHANCE_ACERTO:
-
-			break;
-
-		case GANHAR_VIDA:
-
-			break;
-		case PERDER_VIDA:
-
-			break;
-
-		case GANHAR_ATAQUE:
-
-			break;
-		case PERDER_ATAQUE:
-
-			break;
-
-		case GANHAR_DEFESA:
-
-			break;
-
-		case PERDER_DEFESA:
-
-			break;
-
-		case PERDER_CHANCE_ACERTO:
-
-			break;
-		case GANHAR_VELOCIDADE_MOVIMENTO:
-
-			break;
-		case PERDER_VELOCIDADE_MOVIMENTO:
-
-			break;
 			
 		case CHECAR_COLISAO:
 			if (entitySolicitante instanceof Enemy) 
@@ -89,10 +38,13 @@ public class EntityMediator implements Mediator {
 		for (int i = 0; i < Game.entities.size(); i++) {
 			Entity atual = Game.entities.get(i);
 			if (isCollidingWithAnotherEntity(atual, entity)) {
-				if (entity instanceof BulletsShoot && atual instanceof Enemy) {
+				if (entity instanceof BulletsShoot && atual instanceof Enemy && atual.getVida() > 0) {
 					entity.setOtherEntity(atual);
 					return true;
 //					prepararInteracaoBulletsShootComEnemy((BulletsShoot) entity, (Enemy) atual);
+				} else if (entity instanceof Enemy && atual instanceof Player && atual.getVida() > 0) {
+					entity.setOtherEntity(atual);
+					return true;
 				}
 			}
 		}
@@ -111,7 +63,7 @@ public class EntityMediator implements Mediator {
 	public static void atacar(Entity atacante, Entity vitima) {
 
 		if (vitima.getVida() > 0) {
-			if (!desviar(atacante, vitima)) {
+			if (!vitima.desviar(atacante.getChanceAcerto(), vitima.getEsquiva())) {
 				if (atacante.getAtaque() > vitima.getDefesa()) {
 					atacante.setAttacking(true);
 					vitima.setAttacked(true);
@@ -119,8 +71,8 @@ public class EntityMediator implements Mediator {
 					diminuirVida(vitima, danoDissipado);
 					verificarStatusPersonagemEnum(vitima);
 				} else {
-					System.out.println(vitima.getNome() + " bloqueou o ataque!");
-				}
+					vitima.bloquearDano();
+					}
 
 			} else {
 				System.out.println(vitima.getNome() + " desviou do ataque!");

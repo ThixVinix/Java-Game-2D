@@ -2,8 +2,7 @@ package ferramentas;
 
 public class ConverterNumbers {
 
-	public static Long trasformarEmPositivo(Long num) {
-
+	public static Long converterParaPositivoLong(Long num) {
 		if (num < 0) {
 			num = -(num);
 		}

@@ -9,11 +9,17 @@ public interface EntityActions {
 	
 	public void atacar(Entity atacante, Entity vitima);
 	
+	public boolean desviar(Integer chanceAcertoAtacante, Integer chanceEsquivaVitima);
+	
+	public int dissiparDano(Integer ataqueAtacante, Integer defesaVitima);
+	
+	public void bloquearDano();
+	
 //	public void defender();
 //	
 //	public void ganharVida();
 //	
-	public void perderVida(Integer danoRecebido);
+	public void diminuirVida(Integer danoRecebido);
 //	
 //	public void alterarVidaMaxima();
 //	

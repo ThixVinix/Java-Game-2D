@@ -219,8 +219,8 @@ public class Enemy extends Entity implements CondicoesEntity, CombateEnemy {
 //
 //		case 1:
 
-		if (verificarStatus().equals(StatusPersonagemEnum.VIVO)
-				|| verificarStatus().equals(StatusPersonagemEnum.FERIDO)) {
+		verificarStatus();
+		if (!getStatus().equals(StatusPersonagemEnum.MORTO)) {
 
 		}
 
@@ -254,7 +254,7 @@ public class Enemy extends Entity implements CondicoesEntity, CombateEnemy {
 	}
 
 	private void desenharMovimentacaoEnemy1(Graphics graficos) {
-
+	
 		switch (this.getStatus()) {
 		case VIVO:
 			desenharEnemy1(graficos);
@@ -510,7 +510,7 @@ public class Enemy extends Entity implements CondicoesEntity, CombateEnemy {
 
 		} else {
 			setMoved(false);
-			if (!isMoved() && entityMB.isCollidingWithAnotherEntity(this, Game.player)) {
+			if (!isMoved() && mediador.notify(this, EntityActionEnum.CHECAR_COLISAO)) {
 				framesAttackEnemy1++;
 				if (framesAttackEnemy1 == maxFramesAttackEnemy1) {
 					framesAttackEnemy1 = 0;
@@ -521,7 +521,12 @@ public class Enemy extends Entity implements CondicoesEntity, CombateEnemy {
 				}
 			}
 
-			entityMB.combater(this, Game.player);
+			if ( mediador.notify(this, EntityActionEnum.ATACAR)) {
+				atacar(this, getOtherEntity());
+				System.out.println("ATACOU");
+				setOtherEntity(null);
+			}
+	
 		}
 
 	}
@@ -622,7 +627,7 @@ public class Enemy extends Entity implements CondicoesEntity, CombateEnemy {
 	}
 
 	@Override
-	public void perderVida(Integer danoRecebido) {
+	public void diminuirVida(Integer danoRecebido) {
 		try {
 
 			if (danoRecebido < 0.0) {
@@ -641,8 +646,34 @@ public class Enemy extends Entity implements CondicoesEntity, CombateEnemy {
 	}
 
 	@Override
-	public StatusPersonagemEnum verificarStatus() {
-		return super.verificarStatus();
+	public void verificarStatus() {
+		 super.verificarStatus();
 	}
+
+	@Override
+	public boolean desviar(Integer chanceAcertoAtacante, Integer chanceEsquivaVitima) {
+		if (Game.random.nextInt(chanceAcertoAtacante) <= chanceEsquivaVitima) {
+			return true;
+		}
+		System.out.println(getNome() + " desviou do ataque!");
+		return false;
+	}
+
+	@Override
+	public int dissiparDano(Integer ataqueAtacante, Integer defesaVitima) {
+		int danoDissipado = ataqueAtacante - defesaVitima;
+
+		return danoDissipado;
+	}
+
+	@Override
+	public void bloquearDano() {
+		System.out.println(getNome() + " bloqueou o ataque!");
+		
+	}
+
+	
+
+	
 
 }

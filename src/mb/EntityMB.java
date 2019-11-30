@@ -290,38 +290,24 @@ public class EntityMB {
 
 	public void combater(Entity atacante, Entity vitima) {
 
-		if (vitima.getVida() > 0) {
-			if (!desviar(atacante, vitima)) {
+		
+			if (!vitima.desviar(atacante.getChanceAcerto(), vitima.getEsquiva())) {
 				if (atacante.getAtaque() > vitima.getDefesa()) {
 					atacante.setAttacking(true);
 					vitima.setAttacked(true);
-					int danoDissipado = dissiparDano(atacante, vitima);
-					diminuirVida(vitima, danoDissipado);
-					vitima.perderVida(danoDissipado);
-					verificarStatusPersonagemEnum(vitima);
+					int danoDissipado = vitima.dissiparDano(atacante.getAtaque(), vitima.getDefesa());
+					vitima.diminuirVida(danoDissipado);
+				
 				} else {
 					System.out.println(vitima.getNome() + " bloqueou o ataque!");
 				}
 
-			} else {
-				System.out.println(vitima.getNome() + " desviou do ataque!");
-			}
-		}
+			} 
+		
 
 	}
 
-	private boolean desviar(Entity atacante, Entity defensor) {
-		if (Game.random.nextInt(atacante.getChanceAcerto()) <= defensor.getEsquiva()) {
-			return true;
-		}
-		return false;
-	}
 
-	private int dissiparDano(Entity atacante, Entity defensor) {
-		int danoDissipado = atacante.getAtaque() - defensor.getDefesa();
-
-		return danoDissipado;
-	}
 
 	private void verificarStatusPersonagemEnum(Entity entity) {
 

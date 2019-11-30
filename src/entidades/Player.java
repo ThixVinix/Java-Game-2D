@@ -5,10 +5,13 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
+import javax.swing.JOptionPane;
+
 import abstracts.Entity;
 import aplicacao.Game;
 import enums.StatusGameEnum;
 import enums.StatusPersonagemEnum;
+import exceptions.ValorNegativoException;
 import ferramentas.Constantes;
 import interfaces.CondicoesEntity;
 import interfaces.EntityActions;
@@ -754,6 +757,11 @@ public class Player extends Entity implements CondicoesEntity, EntityActions {
 	}
 
 	@Override
+	public void verificarStatus() {
+		super.verificarStatus();
+	}
+	
+	@Override
 	public void realizarAcoes() {
 		// TODO Auto-generated method stub
 		
@@ -761,15 +769,51 @@ public class Player extends Entity implements CondicoesEntity, EntityActions {
 
 	@Override
 	public void atacar(Entity atacante, Entity vitima) {
-		// TODO Auto-generated method stub
+		entityMB.combater(atacante, vitima);
 		
 	}
 
 	@Override
-	public void perderVida(Integer danoRecebido) {
-		// TODO Auto-generated method stub
+	public void diminuirVida(Integer danoRecebido) {
+		try {
+
+			if (danoRecebido < 0.0) {
+				throw new ValorNegativoException(danoRecebido);
+			}
+
+			setVida(getVida() - danoRecebido);
+
+		} catch (ValorNegativoException e) {
+			JOptionPane.showMessageDialog(null, "O valor da vida passado pelo parâmetro não deve ser negativo",
+					"ValorNegativoException", JOptionPane.WARNING_MESSAGE, null);
+			e.printStackTrace();
+			System.exit(0);
+		}		
+	}
+
+	@Override
+	public boolean desviar(Integer chanceAcertoAtacante, Integer chanceEsquivaVitima) {
+		if (Game.random.nextInt(chanceAcertoAtacante) <= chanceEsquivaVitima) {
+			return true;
+		}
+		System.out.println(getNome() + " desviou do ataque!");
+		return false;
+	}
+
+	@Override
+	public int dissiparDano(Integer ataqueAtacante, Integer defesaVitima) {
+		int danoDissipado = ataqueAtacante - defesaVitima;
+
+		return danoDissipado;
+	}
+
+	@Override
+	public void bloquearDano() {
+		System.out.println(getNome() + " bloqueou o ataque!");
 		
 	}
+
+	
 
 	
 

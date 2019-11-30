@@ -3,7 +3,6 @@ package abstracts;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.util.Iterator;
 
 import aplicacao.Game;
 import enums.StatusPersonagemEnum;
@@ -46,12 +45,12 @@ public abstract class Entity implements LoopingEntity, EntityActions {
 			Constantes.POSICAO_IMAGEM_ENEMY_1_Y, Constantes.LARGURA_ENEMY_1, Constantes.ALTURA_ENEMY_1);
 
 	public static EntityMB entityMB = new EntityMB();
-	
+
 	public static EntityMediator mediador = new EntityMediator();
 
 	private Long id;
 	private Entity otherEntity;
-	
+
 	private String nome;
 	private String guilda;
 	private String estoria;
@@ -75,10 +74,9 @@ public abstract class Entity implements LoopingEntity, EntityActions {
 
 	// "x" and "y" type Integer.
 	public Entity(Integer x, Integer y, Integer width, Integer height, BufferedImage sprite) {
-		
-		id = gerarId();
-		System.out.println("ID GERADO: " + id);
-		
+
+		this.id = ConverterNumbers.converterParaPositivoLong(gerarId());
+
 		this.x = x;
 		this.y = y;
 		this.width = width;
@@ -150,34 +148,30 @@ public abstract class Entity implements LoopingEntity, EntityActions {
 		this.maskHeight = maskHeight;
 	}
 
-	private Long gerarId() {
-		Long cod = ConverterNumbers.trasformarEmPositivo(Game.random.nextLong());
+	private static Long gerarId() {
+		Long cod = Game.random.nextLong();
+
 		for (int i = 0; i < Game.entities.size(); i++) {
-			Entity entityActual = Game.entities.get(i); 
-			
-			if (entityActual.getId().equals(cod)) {
+			Entity entity = Game.entities.get(i);
+			if (entity.getId().equals(cod)) {
 				return gerarId();
 			}
 		}
-		
+
 		return cod;
 	}
 	
-	public  StatusPersonagemEnum verificarStatus() {
-
+	public void verificarStatus() {
 		if (this.getVida() > 40) {
 			this.setStatus(StatusPersonagemEnum.VIVO);
-			return StatusPersonagemEnum.VIVO;
 		} else if (this.getVida() > 0 && this.getVida() <= 40) {
 			this.setStatus(StatusPersonagemEnum.FERIDO);
-			return StatusPersonagemEnum.FERIDO;
 		} else {
 			this.setStatus(StatusPersonagemEnum.MORTO);
-			return StatusPersonagemEnum.MORTO;
 		}
 
 	}
-	
+
 	public Integer getIntegerX() {
 		return (int) x;
 	}
@@ -453,7 +447,9 @@ public abstract class Entity implements LoopingEntity, EntityActions {
 	public void setOtherEntity(Entity otherEntity) {
 		this.otherEntity = otherEntity;
 	}
-	
+
+
+
 	
 
 }
